@@ -40,6 +40,6 @@ To confirm, I calculated the SHA-1 hash of the file:
 
 0068e0c3cba711e775fa374b201d5d04ffcef96c
 
-![Mount screenshot](images/badge1.png)
+<img src="images/badge1.png" alt="Badge" width="300"/>
 
 **Success!** My first ever NSA Codebreaker challenge complete.

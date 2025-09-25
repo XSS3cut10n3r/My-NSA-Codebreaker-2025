@@ -30,11 +30,11 @@ The first place I looked was the root user’s `.bash_history`, since that often
 
 With `/app/test` as a pivot point, I ran a `grep`-ed through the filesystem. This led me to an odd discovery:  
 
+![Mount screenshot](images/grep.png)
+
 /etc/terminfo/s/nsuvzemaow
 
-This terminfo file references `/app/www`. That's a red flag - terminfo directories are supposed to store compiled terminal capability files, not random application paths. The filename itself looked odd too.  
-
-![Mount screenshot](images/grep.png)
+This terminfo file references `/app/www`. That's a red flag - terminfo directories are supposed to store compiled terminal capability files, not random application paths. The filename itself looked odd too.
 
 To confirm, I calculated the SHA-1 hash of the file:  
 

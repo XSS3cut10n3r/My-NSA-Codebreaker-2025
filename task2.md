@@ -55,7 +55,7 @@ That MAC ARPs for 192.168.5.1, so it owns 192.168.5.1 on this L2 segment. Becaus
 
 I submitted this pair of IPs and received the following error:
 
-![Mount screenshot](images/error.png)
+<img src="images/error.png" alt="Error" width="300"/>
 
 After I submitted the two IPs, the checker indicated missing addresses, implying Router3 was compromised and had additional IPs. I revisited the `router3_backup.config` retrieved over FTP.
 

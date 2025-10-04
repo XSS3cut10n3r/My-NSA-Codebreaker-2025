@@ -38,7 +38,7 @@ I saw three files - `router1_backup.config`, `router2_backup.config`, and `route
 <img src="images/tcpstream.png" alt="TCPStream"/>
 </p>
 
-I then used a small Python script to generate a network diagram for the most relevant devices. Reading raw packets without context is error-prone, so the diagram helped focus the analysis.
+I then used a Python script called [PcapXray](https://github.com/Srinivas11789/PcapXray) to generate a network diagram for the most relevant devices. Reading raw packets without context is error-prone, so the diagram helped focus the analysis.
 
 <p align="center">
 <img src="images/network.png" alt="Network"/>

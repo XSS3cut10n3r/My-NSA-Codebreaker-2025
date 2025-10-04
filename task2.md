@@ -77,8 +77,7 @@ After I submitted the two IPs, the checker indicated missing addresses, implying
 <img src="images/router3loopback.png" alt="loopback"/>
 </p>
 
-This explains why my first submission failed: the checker wanted **all IPs assigned to the malicious device**, including its loopback address.  
-Per RFC 1122, the entire `127.0.0.0/8` block is loopback; `127.7.5.3/8` is valid and never appears on the wire, so it won’t show in the PCAP via ARP or `ip.addr` filters - it is only visible in the router’s configuration.
+This explains why my first submission failed: the checker wanted **all IPs assigned to the malicious device**, including its loopback address. Per RFC 1122, the entire `127.0.0.0/8` block is loopback; `127.7.5.3/8` is valid and never appears on the wire, so it won’t show in the PCAP via ARP or `ip.addr` filters - it is only visible in the router’s configuration.
 
 Putting the evidence together:
 

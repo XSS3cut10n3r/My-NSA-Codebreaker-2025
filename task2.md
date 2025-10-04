@@ -90,7 +90,3 @@ Putting the evidence together:
 </p>
 
 **Success!** Two down, five to go.
-
-
-
-

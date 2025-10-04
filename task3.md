@@ -28,3 +28,11 @@
 ## Writeup
 
 A reverse engineering task where we're given a memory dump, the kernel symbol map, and the kernel image. The first step is to discover the malicious binary and the second step is to reverse engineer it. To start with, I set up volatility and the kernel images. 
+
+
+
+<p align="center">
+<img src="images/badge3.png" alt="Badge" width="300"/>
+</p>
+
+**Success!** Three down, four to go.

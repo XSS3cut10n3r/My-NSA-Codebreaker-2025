@@ -138,10 +138,6 @@ mv ZipFormat_7z.class net/axolotl/zippier/
 d8 net/axolotl/zippier/ZipFormat_7z.class
 ```
 
-<p align="center">
-<img src="images/dex_compilation.png" alt="DEX Compilation"/>
-</p>
-
 ### Network Configuration
 
 Since the target device would be on the NSA's network, I used ngrok to create a publicly accessible TCP tunnel:

@@ -27,7 +27,9 @@ This task required reverse engineering an Android application to discover vulner
 
 ### Initial Analysis
 
-I began by decompiling the APK using jadx-gui. The application is heavily obfuscated, and really ugly in JADX. Here we see the FileDownloadWorker for the Mattermost message archiver app. It automatically downloads files from channels and "archives them" - it does something with them, that's what we need to exploit.
+Initially, I started with scanning licenses.txt to see what exactly we're working with. I also used a python script to scan the licenses for vulnerabilities. `Appache commons io 1.3.2` was the only one which seemed to be far far older than it should've been, and it had `CVE-2021-29425` a path traversal vulnerability to go with it.
+
+I then began by decompiling the APK using jadx-gui. The application is heavily obfuscated, and really ugly in JADX. Here we see the FileDownloadWorker for the Mattermost message archiver app. We know from the task description that the app automatically downloads files from channels and "archives them" - it does _something_ with them, that's what we need to exploit.
 
 <p align="center">
 <img src="images/jadx_overview.png" alt="JADX Overview"/>

@@ -208,7 +208,7 @@ u0_a217
 id
 uid=10217(u0_a217) gid=10217(u0_a217) groups=10217(u0_a217)
 pwd
-/data/user/0/com.badguy.mmarchiver
+/
 ```
 
 <p align="center">

@@ -50,9 +50,14 @@ File extractDir = new File(cacheDir, getBasename(zipFile.getName()));
 
 For a file named `...zip`, the basename is `..`, resulting in an extraction path of `/cache/zippier/extract/..`, which resolves to `/cache/zippier/`. This means files within the zip are extracted to the parent directory.
 
-<p align="center">
-<img src="images/path_traversal.png" alt="Path Traversal"/>
-</p>
+graph LR
+    A["...zip"] --> B["basename = '..'"]
+    B --> C["/cache/zippier/extract/.."]
+    C --> D["/cache/zippier/"]
+    D --> E["formats/ZipFormat_7z.jar<br/>written to correct location"]
+    
+    style A fill:#ff6b6b
+    style E fill:#51cf66
 
 The extraction process uses `FileOutputStream` without checking if files already exist, allowing arbitrary file overwrites. Additionally, I discovered that when the app encounters a `.7z` file, it attempts to load a format handler from `/cache/zippier/formats/net.axolotl.zippier.ZipFormat_7z.jar`.
 
@@ -65,9 +70,17 @@ The vulnerability chain:
 3. **Dynamic Class Loading**: Include a trigger file with `.7z` extension
 4. **Code Execution**: The static initializer in the malicious class executes when loaded
 
-<p align="center">
-<img src="images/exploitation_flow.png" alt="Exploitation Flow"/>
-</p>
+graph LR
+    A[1. Upload<br/>...zip] --> B[2. Path<br/>Traversal]
+    B --> C[3. JAR in<br/>formats/]
+    C --> D[4. Process<br/>trigger.7z]
+    D --> E[5. Load<br/>Handler]
+    E --> F[6. Static<br/>Init]
+    F --> G[7. Reverse<br/>Shell]
+    G --> H[8. RCE]
+    
+    style A fill:#ffd43b
+    style H fill:#51cf66
 
 ### Creating the Malicious Payload
 

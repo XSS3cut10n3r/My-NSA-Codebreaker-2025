@@ -27,9 +27,9 @@ This task required reverse engineering an Android application to discover vulner
 
 ### Initial Analysis
 
-Initially, I started with scanning licenses.txt to see what exactly we're working with. I also used a python script to scan the licenses for vulnerabilities. `Appache commons io 1.3.2` was the only one which seemed to be far far older than it should've been, and it had `CVE-2021-29425` a path traversal vulnerability to go with it.
+Initially, I started with scanning licenses.txt to see what exactly we're working with. I also used a python script to scan the licenses for vulnerabilities. `Appache commons io 1.3.2` was the only one which seemed to be far far older than it should've been, and it had `CVE-2021-29425` a path traversal vulnerability to go with it. I thought this would be the exact vulnerability, but it turned out to just be a lead that pointed me toward looking for path traversal issues.
 
-I then began by decompiling the APK using jadx-gui. The application is heavily obfuscated, and really ugly in JADX. Here we see the FileDownloadWorker for the Mattermost message archiver app. We know from the task description that the app automatically downloads files from channels and "archives them" - it does _something_ with them, that's what we need to exploit.
+I then began by decompiling the APK using jadx-gui. The application is heavily obfuscated, and really ugly in JADX. Below we see the FileDownloadWorker for the Mattermost message archiver app, which was one of the nicer looking functions. We know from the task description that the app automatically downloads files from channels and "archives them" - it does _something_ with them, that's what we need to exploit.
 
 <p align="center">
 <img src="images/jadx_overview.png" alt="JADX Overview"/>
@@ -183,7 +183,7 @@ The resulting `...zip` contains:
 
 ### Local Testing
 
-Before submission, I tested the exploit locally using an Android emulator and a locally-hosted Mattermost-preview docker container. 
+Before submission, I tested the exploit locally using an Android emulator and I set up a local Mattermost instance using Docker to simulate the adversary's environment. 
 
 <p align="center">
 <img src="images/mattermost_local.png" alt="Mattermost Local"/>

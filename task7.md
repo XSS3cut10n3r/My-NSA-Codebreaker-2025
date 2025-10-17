@@ -27,13 +27,13 @@ This task required reverse engineering an Android application to discover vulner
 
 ### Initial Analysis
 
-I began by decompiling the APK using jadx-gui. The application appeared to be a Mattermost message archiver that automatically downloads files from channels and archives them.
+I began by decompiling the APK using jadx-gui. The application is heavily obfuscated, and really ugly in JADX. Here we see the FileDownloadWorker for the Mattermost message archiver app. It automatically downloads files from channels and "archives them" - it does something with them, that's what we need to exploit.
 
 <p align="center">
 <img src="images/jadx_overview.png" alt="JADX Overview"/>
 </p>
 
-Examining the source code revealed a custom archive format system with dynamic class loading for different file types (zip, 7z, tar, etc.). The format handlers are loaded from `/cache/zippier/formats/` and implement the `ZipFormat` interface:
+Examining the source code further revealed a custom archive format system with dynamic class loading for different file types (zip, 7z, tar, etc.). The format handlers are loaded from `/cache/zippier/formats/` and implement the `ZipFormat` interface:
 ```java
 public interface ZipFormat {
     String getExtension();

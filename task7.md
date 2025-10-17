@@ -183,7 +183,13 @@ The resulting `...zip` contains:
 
 ### Local Testing
 
-Before submission, I tested the exploit locally using an Android emulator and a locally-hosted Mattermost-preview docker container. The logcat output confirmed successful exploitation:
+Before submission, I tested the exploit locally using an Android emulator and a locally-hosted Mattermost-preview docker container. 
+
+<p align="center">
+<img src="images/mattermost_local.png" alt="Mattermost Local"/>
+</p>
+
+The logcat output confirmed successful exploitation:
 ```
 D FileDownloadWorker: file written to /data/user/0/com.badguy.mmarchiver/cache/download/...zip
 D a: processing zip archive /data/user/0/com.badguy.mmarchiver/cache/download/...zip

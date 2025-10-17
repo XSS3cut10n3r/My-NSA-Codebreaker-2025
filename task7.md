@@ -217,7 +217,7 @@ pwd
 
 ### Submission
 
-With the exploit verified locally, I submitted `...zip` to the NSA Codebreaker platform. The ngrok tunnel showed the incoming connection from the NSA's testing environment, and the reverse shell was successfully established.
+With the exploit verified locally, I submitted `...zip` to the NSA Codebreaker platform.
 
 <p align="center">
 <img src="images/badge7.png" alt="Badge" width="300"/>

@@ -64,8 +64,6 @@ The IP address `203.0.113.108` immediately raised a red flag. The `203.0.113.0/2
 
 **Router 3 (192.168.3.254)** had intercepted the DNS query and responded with a malicious IP address, attempting to redirect the client to an attacker-controlled server. This is a classic DNS spoofing attack where a man-in-the-middle device races to answer DNS queries before the legitimate server.
 
-**[You'll need a screenshot showing the packet details of frame 2028 with the 203.0.113.108 response]**
-
 ### Extracting Router 3 Configuration
 
 Having identified `192.168.3.254` as the malicious device, I needed to enumerate all IP addresses assigned to it. I returned to the FTP traffic and extracted `router3_backup.config` by following the appropriate TCP stream.
@@ -109,10 +107,3 @@ Submitting all three addresses successfully completed the challenge.
 </p>
 
 **Success!** Two down, five to go.
-
-### Key Takeaways
-
-- DNS poisoning can be detected by looking for duplicate responses with the same Transaction ID from different source IPs
-- Malicious DNS responses often redirect to suspicious IP ranges (in this case, a reserved TEST-NET range)
-- Complete enumeration requires examining configuration files, not just live traffic - loopback addresses won't appear in packet captures
-- When analyzing network traffic, always verify DNS responses against expected DNS servers

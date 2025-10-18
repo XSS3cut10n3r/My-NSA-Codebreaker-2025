@@ -91,10 +91,8 @@ config interface 'to_openwrt2'
 ```
 
 <p align="center">
-<img src="images/router3loopback.png" alt="loopback"/>
+<img src="images/router3config.png" alt="Router3 Config"/>
 </p>
-
-The loopback address `127.7.5.3` was particularly important to note. Per RFC 1122, the entire `127.0.0.0/8` block is reserved for loopback addresses. While unconventional to use an address other than `127.0.0.1`, `127.7.5.3/8` is valid and would never appear in packet captures since loopback traffic doesn't traverse the wire.
 
 ### Solution
 

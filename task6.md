@@ -41,6 +41,12 @@ This gave me the credentials to access the Mattermost instance. Next, I explored
 ~/Downloads/volumes ❯ ls
 bot  db
 
+I also identified the PostgreSQL version being used:
+```bash
+~/Downloads/volumes/db/var/lib/postgresql/data ❯ cat PG_VERSION
+13
+```
+
 ~/Downloads/volumes ❯ cd bot
 ~/Downloads/volumes/bot ❯ ls
 bot.py  malware_database.py  mmpy_bot_monkeypatch.py  plugin_admin.py  plugin_managechannel.py  plugin_onboarding.py  plugin_sales.py
@@ -52,106 +58,32 @@ The `bot` directory contained several Python scripts implementing various Matter
 
 The `!nego` command is designed to create private negotiation channels between users. Examining the code revealed a critical vulnerability in how it handles user inputs and channel membership verification.
 
+The command accepts four parameters: a channel name, and three usernames (where the fourth must be a moderator with the `mod_` prefix). The function performs the following operations:
+
+1. Creates a new private channel (or unarchives an existing archived channel)
+2. Verifies that all four users (the command sender plus the three specified users) exist
+3. **Critically**, checks that all four users are members of the **current channel** where the command is executed:
 ```python
-@listen_to('^!nego (.*)$', no_direct=True,human_description="!nego channel seller moderator1 moderator2\n\tCreate a negotiation channel to close a deal!")
-    def handle_nego(self : Plugin, message: Message, *args):
-        logger.debug(f"handle_nego called with message: {message.text}")
-        args = message.text.strip().split()
-        if len(args) != 5:
-            self.driver.reply_to(message, "Usage: !nego channel seller moderator1 moderator2")
-            logger.warning("handle_nego: Incorrect number of arguments")
-            return
-        user1 = message.sender_name
-        _, channel_name, user2, user3, user4 = args[:6]
-        if not user4.startswith('mod_'):
-            self.driver.reply_to(message, f"You must have a mod")
-            return
-        display_name = channel_name
-        team_name = self.driver.options.get('team', 'malwarecentral')
-        print(f"[DEBUG] Looking up team: {team_name}")
-        # Get team info
-        team = self.driver.teams.get_team_by_name(team_name)
-        logger.debug(f"Team API response: {team}")
-        team_id = team.get('id') if isinstance(team, dict) else team.json().get('id')
-        print(f"[DEBUG] team_id: {team_id}")
-        # Create channel
-        channel_options = {
-            "team_id": team_id,
-            "name": channel_name,
-            "display_name": display_name,
-            "type": "P"
-        }
-        logger.debug(f"Creating channel with options: {channel_options}")
-        try:
-            channel = self.driver.channels.create_channel(channel_options)
-            print(f"[DEBUG] Channel API response: {channel}")
-        #hide weird exception when we have an archived channel with the same name, we'll just unarchive it
-        except Exception as e:
-            print(f"[DEBUG] Exception while creating channel: {e}")
-            # Try to unarchive the channel if it exists
-            try:
-                archived_channel = self.driver.channels.get_channel_by_name(channel_name, team_id)
-                if archived_channel and archived_channel.get('delete_at') > 0:
-                    logger.info(f"Unarchiving existing channel: {archived_channel}")
-                    self.driver.channels.unarchive_channel(archived_channel.get('id'))
-                    channel = archived_channel
-            except Exception as e:
-                self.driver.reply_to(message, f"Failed to create or unarchive channel: {e}")
-        #we either created a new channel or unarchived an existing one
-        print(f"[DEBUG] getting channel: {channel_name} in team {team_id}")
-        channel = self.driver.channels.get_channel_by_name(team_id, channel_name)
-        channel_id = channel.get('id') if isinstance(channel, dict) else channel.json().get('id')
-        print(f"[DEBUG] channel_id: {channel_id}")
-        # Get user ids
-        user_ids = []
-        for uname in [user1, user2, user3, user4]:
-            logger.debug(f"Looking up user: {uname}")
-            user = self.driver.users.get_user_by_username(uname)
-            logger.debug(f"User API response: {user}")
-            uid = user.get('id') if isinstance(user, dict) else user.json().get('id')
-            logger.debug(f"user_id for {uname}: {uid}")
-            if not uid:
-                self.driver.reply_to(message, f"User not found: {uname}")
-                logger.warning(f"handle_nego: User not found: {uname}")
-                return
-            user_ids.append(uid)
-        if len(set(user_ids)) != 4:
-            logger.warning(f"incorrect number of users to run command")
-            self.driver.reply_to(message, f"incorrect number of users to run command")
-            return
-        print(f"[DEBUG] All user_ids: {user_ids}")
-
-        # Check if channel already has members
-        existing_members = self.driver.channels.get_channel_members(channel_id)
-        existing_member_user_ids = [member.get('user_id') for member in existing_members]
-        existing_user_ids = any(uid in user_ids for uid in existing_member_user_ids)
-        if existing_user_ids:
-            # If the channel already has members, we should not add them again
-            # This is a safeguard against creating duplicate entries in an archived channel
-            print(f"[DEBUG] Existing members in channel {channel_id}: {existing_member_user_ids}, this shouldn't happen! archived channels should be empty")
-            return
-        # make sure not adding randos
-        current_members_ids = [m['user_id'] for m in self.driver.channels.get_channel_members(message.channel_id)]
-        if not (user_ids[0] in current_members_ids and user_ids[1] in current_members_ids and
-                user_ids[2] in current_members_ids and user_ids[3] in current_members_ids):
-            self.driver.reply_to(message, f"Could not find users")
-            return
-
-        # Add users to channel
-        for uid in user_ids:
-            logger.debug(f"Adding user {uid} to channel {channel_id}")
-            self.driver.channels.add_channel_member(channel_id, {"user_id": uid})
-        self.driver.reply_to(message, f"Created channel '{display_name}' and added users: {user1}, {user2}, {user3}")
-        logger.info(f"Created channel '{display_name}' and added users: {user1}, {user2}, {user3}")
+current_members_ids = [m['user_id'] for m in self.driver.channels.get_channel_members(message.channel_id)]
+if not (user_ids[0] in current_members_ids and user_ids[1] in current_members_ids and
+        user_ids[2] in current_members_ids and user_ids[3] in current_members_ids):
+    self.driver.reply_to(message, f"Could not find users")
+    return
 ```
+4. If all checks pass, adds all four users to the newly created/unarchived channel
 
-The vulnerability exists in the channel membership verification logic. While the function checks if users exist and attempts to verify they're in the current channel, it can be exploited to add yourself to any private channel by leveraging...
+**The vulnerability** lies in the fact that the verification only checks membership in the **source channel** (where the command is executed), not the **destination channel**. This creates a channel hopping exploit:
 
-I also identified the PostgreSQL version being used:
-```bash
-~/Downloads/volumes/db/var/lib/postgresql/data ❯ cat PG_VERSION
-13
-```
+- When you execute `!nego` from the Public channel, you can create a new private channel and add yourself plus 3 other users from Public
+- Once in that new private channel, you can execute `!nego` **again** from within it, as long as you can find 3 other users (including a moderator) who are also in that channel
+- By chaining multiple `!nego` commands, you can progressively "hop" through channels: **Public → Channel A → Channel B → ... → Target Channel**
+
+The only constraints are:
+1. You need 4 users total (including yourself and a moderator) present in each source channel
+2. The moderator must have a username starting with `mod_`
+3. The target users must exist in the current channel before you can add them to a new channel
+
+This allows an attacker with access to only one channel to systematically gain access to any private channel in the system, as long as there exists a path of overlapping user memberships connecting them.
 
 ### Exploitation Strategy
 

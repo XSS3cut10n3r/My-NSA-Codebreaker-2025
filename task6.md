@@ -35,18 +35,11 @@ I began by extracting the provided archive and examining the contents:
 cynicaltuna4:ViPgVWPQheHshaPs
 ```
 
-This gave me the credentials to access the Mattermost instance. Next, I explored the extracted directory structure:
+Next, I explored the extracted directory structure:
 ```bash
 ~/Downloads ❯ cd volumes
 ~/Downloads/volumes ❯ ls
 bot  db
-
-I also identified the PostgreSQL version being used:
-```bash
-~/Downloads/volumes/db/var/lib/postgresql/data ❯ cat PG_VERSION
-13
-```
-
 ~/Downloads/volumes ❯ cd bot
 ~/Downloads/volumes/bot ❯ ls
 bot.py  malware_database.py  mmpy_bot_monkeypatch.py  plugin_admin.py  plugin_managechannel.py  plugin_onboarding.py  plugin_sales.py
@@ -97,7 +90,13 @@ The vulnerability lies in the fact that once added to a new channel, you can use
 
 ### Database Analysis
 
-I set up a local PostgreSQL instance to analyze the Mattermost database and plan my exploitation path:
+I identified the PostgreSQL version being used:
+```bash
+~/Downloads/volumes/db/var/lib/postgresql/data ❯ cat PG_VERSION
+13
+```
+
+I then set up a local PostgreSQL instance to analyze the Mattermost database and plan my exploitation path:
 ```bash
 ┌──(kali㉿kali)-[~/Desktop/NSA_Codebreaker/Task6]
 └─$ sudo docker run -d \

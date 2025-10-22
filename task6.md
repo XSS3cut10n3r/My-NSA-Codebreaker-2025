@@ -185,6 +185,8 @@ With the exploitation path identified through database analysis, I submitted the
 !nego channel26325 meremussel4 sorebuzzard67 mod_sugarycrane58
 ```
 
+It's important to note that the order matters, as looking back at the !nego command, it requires the mod user to be last.
+
 <p align="center">
 <img src="images/badge6.png" alt="Badge" width="300"/>
 </p>

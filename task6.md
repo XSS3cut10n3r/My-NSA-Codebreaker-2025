@@ -176,3 +176,13 @@ This analysis revealed the complete exploitation path:
 - **channel17132** → **channel26325** (using: `cynicaltuna4`, `sorebuzzard67`, `meremussel4`, `mod_sugarycrane58`)
 
 ### Submission
+
+With the exploitation path identified through database analysis, I submitted the following series of commands to the NSA Codebreaker platform:
+```
+!nego channel17298 affectedorange68 pacifiedsnail22 mod_stressedcheese82 
+!nego channel38107 pacifiedsnail22 mildlapwing47 mod_innocentrelish97 
+!nego channel17132 mildlapwing47 sorebuzzard67 mod_sugarythrushe15 
+!nego channel26325 meremussel4 sorebuzzard67 mod_sugarycrane58
+```
+
+**Success!** By exploiting the `!nego` command's membership verification logic and carefully mapping out user overlaps between channels, I successfully gained access to the adversary's private channel.

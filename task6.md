@@ -65,13 +65,17 @@ if not (user_ids[0] in current_members_ids and user_ids[1] in current_members_id
 ```
 4. If all checks pass, adds all four users to the newly created/unarchived channel
 
-**The vulnerability** lies in the fact that the verification only checks membership in the **source channel**, not the **destination channel**. This enables a channel hopping exploit:
+The vulnerability lies in the fact that the verification only checks membership in the **source channel**, not the **destination channel**. This enables a channel hopping exploit:
 
 - Execute `!nego` from the Public channel to create a new private channel with yourself plus 3 other users from Public
 - Once in that new private channel, execute `!nego` **again** to hop to another channel, as long as you can find 3 other users (including a moderator) who are also present
 - By chaining multiple `!nego` commands, progressively "hop" through channels: **Public → Channel A → Channel B → ... → Target Channel**
 
 This allows an attacker with access to only one channel to systematically gain access to any private channel in the system, as long as there exists a path of overlapping user memberships connecting them.
+
+<p align="center">
+<img src="images/hopping.png" alt="Hopping"/>
+</p>
 
 ### Database Analysis
 

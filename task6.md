@@ -52,7 +52,98 @@ The `bot` directory contained several Python scripts implementing various Matter
 
 The `!nego` command is designed to create private negotiation channels between users. Examining the code revealed a critical vulnerability in how it handles user inputs and channel membership verification.
 
-[document content showing the plugin_sales.py code]
+```python
+@listen_to('^!nego (.*)$', no_direct=True,human_description="!nego channel seller moderator1 moderator2\n\tCreate a negotiation channel to close a deal!")
+    def handle_nego(self : Plugin, message: Message, *args):
+        logger.debug(f"handle_nego called with message: {message.text}")
+        args = message.text.strip().split()
+        if len(args) != 5:
+            self.driver.reply_to(message, "Usage: !nego channel seller moderator1 moderator2")
+            logger.warning("handle_nego: Incorrect number of arguments")
+            return
+        user1 = message.sender_name
+        _, channel_name, user2, user3, user4 = args[:6]
+        if not user4.startswith('mod_'):
+            self.driver.reply_to(message, f"You must have a mod")
+            return
+        display_name = channel_name
+        team_name = self.driver.options.get('team', 'malwarecentral')
+        print(f"[DEBUG] Looking up team: {team_name}")
+        # Get team info
+        team = self.driver.teams.get_team_by_name(team_name)
+        logger.debug(f"Team API response: {team}")
+        team_id = team.get('id') if isinstance(team, dict) else team.json().get('id')
+        print(f"[DEBUG] team_id: {team_id}")
+        # Create channel
+        channel_options = {
+            "team_id": team_id,
+            "name": channel_name,
+            "display_name": display_name,
+            "type": "P"
+        }
+        logger.debug(f"Creating channel with options: {channel_options}")
+        try:
+            channel = self.driver.channels.create_channel(channel_options)
+            print(f"[DEBUG] Channel API response: {channel}")
+        #hide weird exception when we have an archived channel with the same name, we'll just unarchive it
+        except Exception as e:
+            print(f"[DEBUG] Exception while creating channel: {e}")
+            # Try to unarchive the channel if it exists
+            try:
+                archived_channel = self.driver.channels.get_channel_by_name(channel_name, team_id)
+                if archived_channel and archived_channel.get('delete_at') > 0:
+                    logger.info(f"Unarchiving existing channel: {archived_channel}")
+                    self.driver.channels.unarchive_channel(archived_channel.get('id'))
+                    channel = archived_channel
+            except Exception as e:
+                self.driver.reply_to(message, f"Failed to create or unarchive channel: {e}")
+        #we either created a new channel or unarchived an existing one
+        print(f"[DEBUG] getting channel: {channel_name} in team {team_id}")
+        channel = self.driver.channels.get_channel_by_name(team_id, channel_name)
+        channel_id = channel.get('id') if isinstance(channel, dict) else channel.json().get('id')
+        print(f"[DEBUG] channel_id: {channel_id}")
+        # Get user ids
+        user_ids = []
+        for uname in [user1, user2, user3, user4]:
+            logger.debug(f"Looking up user: {uname}")
+            user = self.driver.users.get_user_by_username(uname)
+            logger.debug(f"User API response: {user}")
+            uid = user.get('id') if isinstance(user, dict) else user.json().get('id')
+            logger.debug(f"user_id for {uname}: {uid}")
+            if not uid:
+                self.driver.reply_to(message, f"User not found: {uname}")
+                logger.warning(f"handle_nego: User not found: {uname}")
+                return
+            user_ids.append(uid)
+        if len(set(user_ids)) != 4:
+            logger.warning(f"incorrect number of users to run command")
+            self.driver.reply_to(message, f"incorrect number of users to run command")
+            return
+        print(f"[DEBUG] All user_ids: {user_ids}")
+
+        # Check if channel already has members
+        existing_members = self.driver.channels.get_channel_members(channel_id)
+        existing_member_user_ids = [member.get('user_id') for member in existing_members]
+        existing_user_ids = any(uid in user_ids for uid in existing_member_user_ids)
+        if existing_user_ids:
+            # If the channel already has members, we should not add them again
+            # This is a safeguard against creating duplicate entries in an archived channel
+            print(f"[DEBUG] Existing members in channel {channel_id}: {existing_member_user_ids}, this shouldn't happen! archived channels should be empty")
+            return
+        # make sure not adding randos
+        current_members_ids = [m['user_id'] for m in self.driver.channels.get_channel_members(message.channel_id)]
+        if not (user_ids[0] in current_members_ids and user_ids[1] in current_members_ids and
+                user_ids[2] in current_members_ids and user_ids[3] in current_members_ids):
+            self.driver.reply_to(message, f"Could not find users")
+            return
+
+        # Add users to channel
+        for uid in user_ids:
+            logger.debug(f"Adding user {uid} to channel {channel_id}")
+            self.driver.channels.add_channel_member(channel_id, {"user_id": uid})
+        self.driver.reply_to(message, f"Created channel '{display_name}' and added users: {user1}, {user2}, {user3}")
+        logger.info(f"Created channel '{display_name}' and added users: {user1}, {user2}, {user3}")
+```
 
 The vulnerability exists in the channel membership verification logic. While the function checks if users exist and attempts to verify they're in the current channel, it can be exploited to add yourself to any private channel by leveraging...
 

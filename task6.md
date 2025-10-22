@@ -185,8 +185,8 @@ With the exploitation path identified through database analysis, I submitted the
 !nego channel26325 meremussel4 sorebuzzard67 mod_sugarycrane58
 ```
 
-**Success!** By exploiting the `!nego` command's membership verification logic and carefully mapping out user overlaps between channels, I successfully gained access to the adversary's private channel.
-
 <p align="center">
 <img src="images/badge6.png" alt="Badge" width="300"/>
 </p>
+
+**Success!** By exploiting the `!nego` command's membership verification logic and carefully mapping out user overlaps between channels, I successfully gained access to the adversary's private channel.

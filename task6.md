@@ -73,10 +73,6 @@ The vulnerability lies in the fact that the verification only checks membership 
 
 This allows an attacker with access to only one channel to systematically gain access to any private channel in the system, as long as there exists a path of overlapping user memberships connecting them.
 
-<p align="center">
-<img src="images/hopping.png" alt="Hopping"/>
-</p>
-
 ### Database Analysis
 
 I identified the PostgreSQL version and set up a local instance to analyze the Mattermost database:
@@ -166,6 +162,10 @@ This analysis revealed the complete exploitation path:
 - **channel17298** → **channel38107** (using: `cynicaltuna4`, `pacifiedsnail22`, `mildlapwing47`, `mod_innocentrelish97`)
 - **channel38107** → **channel17132** (using: `cynicaltuna4`, `mildlapwing47`, `sorebuzzard67`, `mod_sugarythrushe15`)
 - **channel17132** → **channel26325** (using: `cynicaltuna4`, `sorebuzzard67`, `meremussel4`, `mod_sugarycrane58`)
+
+<p align="center">
+<img src="images/hopping.png" alt="Hopping"/>
+</p>
 
 ### Submission
 

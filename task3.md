@@ -1,4 +1,4 @@
-# Task 3 - Digging deeper - (Reverse Engineering)
+# Task 3 - Digging Deeper - (Reverse Engineering)
 
 > The network administrators confirm that the IP address you provided in your description is an edge router. DAFIN-SOC is asking you to dive deeper and reverse engineer this device. Fortunately, their team managed to pull a memory dump of the device.
 

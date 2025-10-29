@@ -102,7 +102,7 @@ The malicious device (Router 3) had three IP addresses assigned:
 
 Submitting all three addresses successfully completed the challenge.
 
-<p align="center">
+<p>
 <img src="images/badge2.png" alt="Badge" width="300"/>
 </p>
 

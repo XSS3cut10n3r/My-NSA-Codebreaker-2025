@@ -4,13 +4,15 @@ Writeups and solutions for the NSA Codebreaker Challenge.
 
 ## Tasks
 
-- [Task 1](./task1.md)
-- [Task 2](./task2.md)
-- [Task 3](./task3.md)
-- [Task 4](./task4.md)
-- [Task 5](./task5.md)
-- [Task 6](./task6.md)
-- [Task 7](./task7.md)
+| Task | Name | Category |
+|:-----|:-----|:--------:|
+| [Task 1](./task1.md) | Getting Started | Forensics |
+| [Task 2](./task2.md) | The Hunt Continues | Network Forensics |
+| [Task 3](./task3.md) | Digging Deeper | Reverse Engineering |
+| [Task 4](./task4.md) | Unpacking Insight | Malware Analysis |
+| [Task 5](./task5.md) | Putting It All Together | Cryptanalysis |
+| [Task 6](./task6.md) | Crossing the Channel | Vulnerability Research |
+| [Task 7](./task7.md) | Finale | Vulnerability Research, Exploitation |
 
 ## About the Challenge
 

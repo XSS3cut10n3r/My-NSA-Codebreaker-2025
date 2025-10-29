@@ -28,7 +28,7 @@ I started by mounting the EXT2 image in read-only mode so I could safely explore
 
 The first place I looked was the root user’s `.bash_history`, since that often tells the story of what happened on the system. The history revealed a **pattern**: lots of local network probing (using `curl`, `wget`, `nc`, `netstat`, etc.), checks against DNS, and even repeated calls to `http://localhost/app/test`. Mixed in were commands to mount `/dev/sdb1` to `/mnt/usb` and edits to the crontab. In other words, whoever was on this box was hammering on a local web service, staging files via USB, and attempting persistence through cron.  
 
-<p align="center">
+<p>
 <img src="images/bash_history.png" alt="BashHistory"/>
 </p>
 

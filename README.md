@@ -12,12 +12,20 @@ Writeups and solutions for the NSA Codebreaker Challenge.
 - [Task 6](./task6.md)
 - [Task 7](./task7.md)
 
-## About
+## About the Challenge
 
-The NSA Codebreaker Challenge is an annual reverse engineering and cybersecurity competition with progressively difficult tasks. Each task builds on the previous ones.
+The NSA Codebreaker Challenge provides students with a hands-on opportunity to develop their reverse-engineering and low-level code analysis skills while working on a realistic problem set centered around the NSA's mission.
 
-These writeups cover techniques including reverse engineering, network analysis, cryptography, binary analysis, and web application security.
+The challenge consists of a series of tasks worth varying points based on difficulty. Tasks are strictly sequential and must be solved in order. Each task requires a range of skills including reverse engineering, network analysis, cryptography, binary analysis, and web application security.
+
+## Scenario
+
+This year's challenge involves assisting the NSA's Cyber Response Team in investigating suspicious activity detected by the Air Force's Security Operations Center. The scenario involves analyzing potential infiltration attempts by advanced foreign adversaries targeting military cyber operations.
+
+## Disclaimer
+
+The challenge content is a purely fictional scenario created by the NSA for educational purposes only. Any similarities to real persons, entities, or events is coincidental.
 
 ## Note
 
-Writeups published after the challenge period ended. For educational purposes only.
+These writeups are published after the challenge period has ended and are intended for educational purposes.

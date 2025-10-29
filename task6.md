@@ -179,7 +179,7 @@ With the exploitation path identified through database analysis, I submitted the
 
 Each command would be executed sequentially from the respective channels to hop from Public to channel17298, then to channel38107, channel17132, and finally to channel26325 where the adversary was located.
 
-<p align="center">
+<p>
 <img src="images/badge6.png" alt="Badge" width="300"/>
 </p>
 

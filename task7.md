@@ -223,7 +223,7 @@ pwd
 
 With the exploit verified locally, I submitted `...zip` to the NSA Codebreaker platform.
 
-<p align="center">
+<p>
 <img src="images/badge7.png" alt="Badge" width="300"/>
 </p>
 

@@ -1,4 +1,4 @@
-# Task 2 - The hunt continues - (Network Forensics)
+# Task 2 - The Hunt Continues - (Network Forensics)
 
 > With your help, the team concludes that there was clearly a sophisticated piece of malware installed on that endpoint that was generating some network traffic. Fortunately, DAFIN-SOC also has an IDS which retained the recent network traffic in this segment.
 

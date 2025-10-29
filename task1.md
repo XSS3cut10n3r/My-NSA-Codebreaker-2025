@@ -22,7 +22,7 @@
 
 I started by mounting the EXT2 image in read-only mode so I could safely explore its contents.  
 
-<p align="center">
+<p>
 <img src="images/mount.png" alt="Mount"/>
 </p>
 
@@ -34,7 +34,7 @@ The first place I looked was the root user’s `.bash_history`, since that often
 
 With `/app/test` as a pivot point, I ran a `grep`-ed through the filesystem. This led me to an odd discovery:  
 
-<p align="center">
+<p>
 <img src="images/grep.png" alt="Grep"/>
 </p>
 

@@ -38,7 +38,7 @@ The binary was stripped, removing symbol information and making our static analy
 To identify potential obfuscation or packing, I performed entropy analysis on the binary. The entropy graph revealed several sections with notably high entropy (approaching 1.0), indicating the presence of encrypted or compressed data:
 
 <p align="center">
-<img src="images/Entropy.png" alt="Entropy"/>
+<img src="images/entropy.png" alt="Entropy"/>
 </p>
 
 

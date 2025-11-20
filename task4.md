@@ -22,3 +22,24 @@ Submit the file path the malware uses to write a file.
 
 ## Writeup
 
+Initial file identification revealed the given sample to be a 64-bit Linux executable:
+```bash
+$ file suspicious 
+suspicious: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), 
+dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, 
+BuildID[sha1]=3fc9729b05add2cba0bddd498f66c8b497060343, 
+for GNU/Linux 3.2.0, stripped
+```
+
+The binary was stripped, removing symbol information and making our static analysis a bit more challenging.
+
+### Entropy Analysis
+
+To identify potential obfuscation or packing, I performed entropy analysis on the binary. The entropy graph revealed several sections with notably high entropy (approaching 1.0), indicating the presence of encrypted or compressed data:
+
+<p align="center">
+<img src="images/Entropy.png" alt="Entropy"/>
+</p>
+
+
+

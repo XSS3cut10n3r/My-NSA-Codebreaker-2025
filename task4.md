@@ -128,9 +128,9 @@ When a debugger is attached, the `TracerPid` value in `/proc/self/status` is non
 
 ---
 
-### Comprehensive Anti-Debug Bypass
+### Anti-Debug Bypass
 
-To enable full dynamic analysis, I created a comprehensive Python script to patch all three anti-debug mechanisms:
+To enable full dynamic analysis, I created a simple Python script to patch all three anti-debug mechanisms:
 ```python
 with open('suspicious', 'rb') as f:
     data = bytearray(f.read())

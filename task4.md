@@ -66,7 +66,7 @@ This instruction attempts to write to NULL (address 0x0), an intentional crash m
 
 ### Identifying Additional Anti-Debug Functions
 
-However, simply NOPing out the crash instruction proved insufficient. Through static analysis in IDA Pro, I examined the binary to understand the full anti-debug chain and discovered two additional protection mechanisms that needed to be bypassed.
+However, simply NOPing out the crash instruction proved insufficient. Through static analysis in IDA, I examined the binary to understand the full anti-debug chain and discovered two additional protection mechanisms that needed to be bypassed.
 
 #### Mechanism 1: ptrace Detection (sub_3590)
 

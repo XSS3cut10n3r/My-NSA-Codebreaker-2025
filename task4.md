@@ -88,7 +88,7 @@ __int64 sub_3590()
 When a process is already being traced by a debugger, `PTRACE_TRACEME` fails with `errno = EPERM (1)`. The function returns a non-zero value if a debugger is detected, which triggers the anti-debug chain.
 
 <p align="center">
-<img src="images/sub_3590_ida.png" alt="sub_3590 in IDA"/> [SCREENSHOT: IDA decompilation of sub_3590]
+<img src="images/sub_3590.png" alt="sub_3590 in IDA"/>
 </p>
 
 #### Mechanism 2: TracerPid Check (sub_3470)

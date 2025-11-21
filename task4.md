@@ -359,13 +359,4 @@ Decrypted file path: /opt/dafin/intel/ops_brief_redteam.pdf
 
 ---
 
-### Conclusion
-
-Through a combination of static and dynamic analysis, I successfully de-obfuscated the malware sample by:
-
-1. Identifying and bypassing multiple anti-debug mechanisms (ptrace, TracerPid, NULL trap)
-2. Using dynamic analysis to extract the memory-mapped payload
-3. Reverse engineering the unpacked payload to discover RC4 encryption
-4. Implementing RC4 decryption to recover the target file path
-
-**Answer:** `/opt/dafin/intel/ops_brief_redteam.pdf`
+**Success!** By bypassing multiple anti-debug protections, extracting the memory-mapped payload through dynamic analysis, and reverse engineering the RC4 encryption scheme with the key `skibidi` I successfully decrypted the hidden file path **/opt/dafin/intel/ops_brief_redteam.pdf**.

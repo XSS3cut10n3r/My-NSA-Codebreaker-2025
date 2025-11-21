@@ -210,7 +210,7 @@ lrwx------ 1 kali kali 64 Nov 20 21:01 3 -> '/memfd: (deleted)'
 
 File descriptor 3 pointed to `/memfd: (deleted)` - a memory-backed file. This technique allows the malware to unpack a payload into memory without writing to disk, avoiding file-based detection. I extracted this data while the program was paused:
 ```gdb
-(gdb) dump binary memory /tmp/write1.bin 0x555555590390 0x555555590390+0xcee8
+(gdb) dump binary memory /tmp/extracted.bin 0x555555590390 0x555555590390+0xcee8
 ```
 
 ---
@@ -219,8 +219,8 @@ File descriptor 3 pointed to `/memfd: (deleted)` - a memory-backed file. This te
 
 The extracted payload was itself an ELF binary:
 ```bash
-$ file /tmp/write1.bin
-/tmp/write1.bin: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), 
+$ file /tmp/extracted.bin
+/tmp/extracted.bin: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), 
 dynamically linked, BuildID[sha1]=69d0667eed34a355fc78fbe68a7eed42897947c1, stripped
 ```
 

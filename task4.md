@@ -224,7 +224,7 @@ $ file /tmp/extracted.bin
 dynamically linked, BuildID[sha1]=69d0667eed34a355fc78fbe68a7eed42897947c1, stripped
 ```
 
-Loading this unpacked payload into IDA Pro revealed the true functionality. The payload's `run()` function showed an interesting pattern:
+Loading this unpacked payload into IDA revealed the true functionality. The payload's `run()` function showed an interesting pattern:
 ```c
 unsigned __int64 run()
 {

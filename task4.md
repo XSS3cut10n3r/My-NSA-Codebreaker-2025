@@ -290,7 +290,6 @@ F9 22 B9 AC 42 A6 C7 07 00 09 F7 59 C9 E1 2E 63
 ```
 
 To decrypt this, I implemented the following in Python:
-In RC4's standard implementation, S represents the state array (a permutation of values 0-255), while i and j are indices used to traverse and manipulate this array.
 ```python
 def rc4_init(key):
     """RC4 Key Scheduling Algorithm (KSA)"""
@@ -326,6 +325,8 @@ plaintext = bytes([c ^ rc4_keystream_byte(rc4_state) for c in ciphertext])
 print(f"Decrypted: {plaintext.decode()}")
 # /opt/dafin/intel/ops_brief_redteam.pdf
 ```
+
+In RC4's standard implementation, S represents the state array (a permutation of values 0-255), while i and j are indices used to traverse and manipulate this array. For further reading I highly recommend the Wikipedia page: https://en.wikipedia.org/wiki/RC4. 
 
 Running this script revealed the file path the malware uses:
 ```

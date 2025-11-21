@@ -123,7 +123,7 @@ _BOOL8 sub_3470()
 When a debugger is attached, the `TracerPid` value in `/proc/self/status` is non-zero (the PID of the debugging process). This function returns true when debugging is detected.
 
 <p align="center">
-<img src="images/sub_3470_ida.png" alt="sub_3470 in IDA"/> [SCREENSHOT: IDA decompilation of sub_3470]
+<img src="images/sub_3470.png" alt="sub_3470 in IDA"/>
 </p>
 
 ---

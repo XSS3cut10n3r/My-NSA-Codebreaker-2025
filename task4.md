@@ -289,34 +289,63 @@ F9 22 B9 AC 42 A6 C7 07 00 09 F7 59 C9 E1 2E 63
 77 F3 A0 71 DB 1F
 ```
 
-To decrypt this, I implemented the RC4 algorithm in Python:
+To decrypt this, I implemented the following in Python:
 ```python
+# RC4 is a stream cipher that generates pseudo-random bytes based on a key.
+# The malware used RC4 to encrypt strings. We found the key "skibidi" and 
+# encrypted data by reverse engineering the unpacked payload.
+
 def rc4_init(key):
-    """Initialize RC4 state with 256-byte S array"""
-    S = list(range(256))
-    j = 0
-    for i in range(256):
-        j = (j + S[i] + key[i % len(key)]) % 256
-        S[i], S[j] = S[j], S[i]
-    return {'S': S, 'i': 0, 'j': 0}
+    # Initialize RC4 by creating a permutation of 0-255 scrambled by the key.
+    # This is the Key Scheduling Algorithm (KSA).
+    
+    number_list = list(range(256))
+    scramble_index = 0
+    
+    for position in range(256):
+        # Update scramble index based on current value and key byte
+        scramble_index = (scramble_index + number_list[position] + key[position % len(key)]) % 256
+        # Swap values to scramble the list
+        number_list[position], number_list[scramble_index] = \
+            number_list[scramble_index], number_list[position]
+    
+    return {'number_list': number_list, 'counter_i': 0, 'counter_j': 0}
 
 def rc4_byte(state):
-    """Generate one keystream byte and update state"""
-    state['i'] = (state['i'] + 1) % 256
-    state['j'] = (state['j'] + state['S'][state['i']]) % 256
-    state['S'][state['i']], state['S'][state['j']] = \
-        state['S'][state['j']], state['S'][state['i']]
-    return state['S'][(state['S'][state['i']] + state['S'][state['j']]) % 256]
+    # Generate one keystream byte. State is modified on each call.
+    # This is the Pseudo-Random Generation Algorithm (PRGA).
+    
+    number_list = state['number_list']
+    
+    # Increment counter_i
+    state['counter_i'] = (state['counter_i'] + 1) % 256
+    pos_i = state['counter_i']
+    
+    # Update counter_j based on current permutation value
+    state['counter_j'] = (state['counter_j'] + number_list[pos_i]) % 256
+    pos_j = state['counter_j']
+    
+    # Swap values at both positions
+    number_list[pos_i], number_list[pos_j] = number_list[pos_j], number_list[pos_i]
+    
+    # Generate output byte by looking up permutation at sum of both values
+    lookup_index = (number_list[pos_i] + number_list[pos_j]) % 256
+    return number_list[lookup_index]
 
-# Initialize with "skibidi"
-state = rc4_init(b"skibidi")
 
-# Encrypted file path (38 bytes from 0xD580)
-enc1 = bytes.fromhex('C71675C60FC7143616AF4C1D340141BAF922B9AC42A6C7070009F759C9E12E6377F3A071DB1F')
+# Initialize RC4 with key "skibidi" found in malware's run() function
+cipher_state = rc4_init(b"skibidi")
 
-# Decrypt
-dec1 = bytes([b ^ rc4_byte(state) for b in enc1])
-print(f"Decrypted file path: {dec1.decode()}")
+# Encrypted data extracted from address 0xD580 in unpacked payload (38 bytes)
+# This was passed to sub_7EFF (RC4 decryption) by sub_8574()
+encrypted_data = bytes.fromhex('C71675C60FC7143616AF4C1D340141BAF922B9AC42A6C7070009F759C9E12E6377F3A071DB1F')
+
+# Decrypt by XORing each byte with keystream
+# XOR operation reverses encryption: ciphertext ^ keystream = plaintext
+decrypted_data = bytes([byte ^ rc4_byte(cipher_state) for byte in encrypted_data])
+
+print(f"Decrypted file path: {decrypted_data.decode()}")
+# Output: /opt/dafin/intel/ops_brief_redteam.pdf
 ```
 
 Running this script revealed the file path the malware uses:

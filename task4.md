@@ -279,7 +279,7 @@ _BOOL8 __fastcall sub_8574(__int64 a1)
 This function decrypts data from address `0xD580` and checks if that path exists on the filesystem. Examining the encrypted data in IDA:
 
 <p align="center">
-<img src="images/encrypted_data.png" alt="Encrypted data at 0xD580"/> [SCREENSHOT: IDA showing hex bytes at 0xD580]
+<img src="images/encrypted_data.png" alt="Encrypted data at 0xD580"/>
 </p>
 
 The encrypted bytes at `0xD580` (38 bytes):

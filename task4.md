@@ -62,7 +62,7 @@ The program immediately crashed with a SIGSEGV (segmentation fault) at address `
 0x55555555765a    mov    DWORD PTR ds:0x0, 0x0
 ```
 
-This instruction attempts to write to NULL (address 0x0), an intentional crash mechanism designed to detect debuggers.
+This instruction attempts to write to NULL (address 0x0), an intentional crash mechanism.
 
 ### Identifying Additional Anti-Debug Functions
 

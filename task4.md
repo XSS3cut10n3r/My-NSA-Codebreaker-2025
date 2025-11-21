@@ -248,7 +248,7 @@ unsigned __int64 run()
 ```
 
 <p align="center">
-<img src="images/run_function.png" alt="run function"/> [SCREENSHOT: IDA decompilation of run() function]
+<img src="images/run_function.png" alt="run function"/>
 </p>
 
 The function initializes an RC4 cipher state with the key `"skibidi"` and then calls multiple check functions, each of which decrypts strings using the RC4 state.
@@ -354,7 +354,7 @@ Decrypted file path: /opt/dafin/intel/ops_brief_redteam.pdf
 ```
 
 <p align="center">
-<img src="images/decrypted_path.png" alt="Decrypted path"/> [SCREENSHOT: Terminal showing Python script output]
+<img src="images/decrypted_path.png" alt="Decrypted path"/>
 </p>
 
 ---

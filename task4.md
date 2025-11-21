@@ -359,4 +359,4 @@ Decrypted file path: /opt/dafin/intel/ops_brief_redteam.pdf
 
 ---
 
-**Success!** By bypassing multiple anti-debug protections, extracting the memory-mapped payload through dynamic analysis, and reverse engineering the RC4 encryption scheme with the key `skibidi` I successfully decrypted the hidden file path **/opt/dafin/intel/ops_brief_redteam.pdf**.
+**Success!** By bypassing multiple anti-debug protections, extracting the memory-mapped payload through dynamic analysis, and reverse engineering the RC4 encryption scheme with the key `skibidi` I successfully decrypted the hidden file path.

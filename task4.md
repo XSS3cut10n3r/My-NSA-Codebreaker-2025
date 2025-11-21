@@ -159,21 +159,30 @@ The patches work by:
 
 ---
 
-### Dynamic Analysis and Payload Extraction
+## Dynamic Analysis and Payload Extraction
 
-With the anti-debug protections bypassed, I proceeded with dynamic analysis using GDB to observe the malware's runtime behavior:
+With the anti-debug protections bypassed, I proceeded with dynamic analysis using GDB. Since the challenge specifically asks for "the file path the malware uses to write a file," I set a catchpoint on the `write` system call to monitor all write operations:
 ```bash
 $ gdb ./suspicious_patched3
 (gdb) catch syscall write
+Catchpoint 1 (syscall 'write' [1])
 (gdb) run
 (gdb) continue
 ```
 
-By setting a catchpoint on the `write` system call, I could monitor all file operations. After several continues through stdout/stderr writes, I hit a significant write operation:
+Upon the first continue, I hit a write operation. To understand what was being written, I needed to examine the system call arguments. On x86-64 Linux, system calls pass arguments through registers according to the following convention:
 
-<p align="center">
-<img src="images/memfd_write.png" alt="memfd write"/> [SCREENSHOT: GDB showing write to memfd]
-</p>
+- `rdi` = first argument
+- `rsi` = second argument  
+- `rdx` = third argument
+
+For the `write` system call specifically, the signature is `write(int fd, const void *buf, size_t count)`, which maps to:
+
+- `rdi` = file descriptor (where to write)
+- `rsi` = buffer pointer (what to write)
+- `rdx` = byte count (how much to write)
+
+Examining these registers:
 ```gdb
 (gdb) info registers rdi rsi rdx
 rdi            0x3                 0x3
@@ -181,13 +190,25 @@ rsi            0x555555590390      0x555555590390
 rdx            0xcee8              0xcee8
 ```
 
-Examining the file descriptors revealed that fd 3 was writing to a memory-backed file:
+This revealed the malware was writing to file descriptor 3, with 0xcee8 (52,968) bytes of data from memory address 0x555555590390. The large size suggested this was payload data rather than typical logging output.
+
+To identify what file descriptor 3 represented, I checked the process's file descriptors while it was paused in the debugger:
 ```bash
 (gdb) shell ls -la /proc/$(pgrep suspicious)/fd/
+total 0
+dr-x------ 2 kali kali  4 Nov 20 21:01 .
+dr-xr-xr-x 9 kali kali  0 Nov 20 21:01 ..
+lrwx------ 1 kali kali 64 Nov 20 21:01 0 -> /dev/pts/0
+lrwx------ 1 kali kali 64 Nov 20 21:01 1 -> /dev/pts/0
+lrwx------ 1 kali kali 64 Nov 20 21:01 2 -> /dev/pts/0
 lrwx------ 1 kali kali 64 Nov 20 21:01 3 -> '/memfd: (deleted)'
 ```
 
-This indicated the malware was unpacking a payload directly into memory rather than writing to disk. I extracted the payload being written:
+<p align="center">
+<img src="images/memfd_write.png" alt="memfd write and fd check"/>
+</p>
+
+File descriptor 3 pointed to `/memfd: (deleted)` - a memory-backed file. This technique allows the malware to unpack a payload into memory without writing to disk, avoiding file-based detection. I extracted this data while the program was paused:
 ```gdb
 (gdb) dump binary memory /tmp/write1.bin 0x555555590390 0x555555590390+0xcee8
 ```

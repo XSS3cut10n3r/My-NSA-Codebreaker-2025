@@ -1,8 +1,4 @@
-# NSA Codebreaker Challenge 2025 Writeups
-
-My writeups and solutions for the NSA Codebreaker Challenge.
-
-## About Me + Reflection
+# About Me + Reflection
 
 I'm currently pursuing my Bachelor's degree at the SANS Institute with a focus on cybersecurity. My interest in the field grew from wanting to understand how networks and computer systems operate at a fundamental level, which naturally led me to security. 
 

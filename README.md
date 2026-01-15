@@ -2,9 +2,15 @@
 
 My writeups and solutions for the NSA Codebreaker Challenge.
 
-## About Me
+## About Me + Reflection
 
-I'm currently pursuing my Bachelor's degree at the SANS Institute with a focus on cybersecurity. My interest in the field grew from wanting to understand how networks and computer systems operate at a fundamental level, which naturally led me to security. One of my highlights from this challenge was Task 4, which introduced me to malware analysis—an area I hadn't explored in depth before and found myself diving deep into.
+I'm currently pursuing my Bachelor's degree at the SANS Institute with a focus on cybersecurity. My interest in the field grew from wanting to understand how networks and computer systems operate at a fundamental level, which naturally led me to security. 
+
+This was my first NSA Codebreaker Challenge, and the sequential structure helped build skills progressively. Task 4 was definitely the highlight—it introduced me to real malware analysis techniques I hadn't worked with before. Bypassing the multi-layered anti-debug protections (ptrace detection, TracerPid checks, and the NULL pointer trap) taught me how malware authors actually defend their code. Using GDB catchpoints to monitor syscalls and extract the memfd payload was new territory for me, and reverse engineering the RC4 encryption scheme to decrypt the hidden file path felt like solving a puzzle where everything finally clicked.
+
+The Android exploitation in Task 7 was also fascinating—chaining the path traversal vulnerability with dynamic class loading to achieve RCE required thinking through the entire execution flow. Testing it locally with an emulator and watching the reverse shell connect was incredibly satisfying. Task 6's Mattermost vulnerability was more subtle; realizing the `!nego` command only validated source channel membership, not destination, and then using SQL CTEs to map the exploitation path through overlapping users was a different kind of problem-solving.
+
+Looking back, I definitely spent too much time initially trying to brute-force solutions instead of stepping back to understand the mechanisms. In Task 2, I could've identified the DNS poisoning faster if I'd filtered for anomalies systematically rather than manually inspecting traffic. The forensics and reverse engineering tasks also taught me the importance of documenting findings as I go - I had to backtrack several times because I didn't keep proper notes on what I'd already discovered. Overall, the challenge reinforced that cybersecurity requires methodical thinking and patience as much as technical skills.
 
 ## Tasks
 
